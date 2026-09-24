@@ -3,18 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Super Humanoids — Artila Robotics</title>
-<meta name="description" content="Artila Robotics is building foundation models for general-purpose humanoid robots — one model family for perception, locomotion and manipulation, learned rather than programmed task by task.">
+<title>Super Humanoids</title>
+<meta name="description" content="We will do what humanoids cannot. Building machines that reconfigure their own bodies to suit the task, instead of forcing every task through one fixed shape.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://superhumanoids.ai/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Super Humanoids">
-<meta property="og:title" content="Super Humanoids — Artila Robotics">
-<meta property="og:description" content="Foundation models for general-purpose humanoid robots.">
+<meta property="og:title" content="Super Humanoids">
+<meta property="og:description" content="We will do what humanoids cannot.">
 <meta property="og:url" content="https://superhumanoids.ai/">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Super Humanoids — Artila Robotics">
-<meta name="twitter:description" content="Foundation models for general-purpose humanoid robots.">
+<meta property="og:image" content="https://superhumanoids.ai/hero.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Super Humanoids">
+<meta name="twitter:description" content="We will do what humanoids cannot.">
+<meta name="twitter:image" content="https://superhumanoids.ai/hero.jpg">
 <meta name="theme-color" content="#08090B">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2308090B'/%3E%3Cg stroke='%23D98A3D' stroke-width='2.2' fill='none' stroke-linecap='round'%3E%3Cpath d='M16 7v9'/%3E%3Cpath d='M16 16l-4 5'/%3E%3Cpath d='M16 16l4 5'/%3E%3Cpath d='M16 10l-4 3'/%3E%3Cpath d='M16 10l4 3'/%3E%3C/g%3E%3Ccircle cx='16' cy='5' r='2.2' fill='%23D98A3D'/%3E%3C/svg%3E">
 </head>
@@ -28,41 +30,42 @@
     --bg:#08090B; --panel:#0E1116; --ink:#E9EEF1; --ink-2:#8B97A1; --ink-3:#5A656E;
     --line:#191F26; --accent:#D98A3D; --accent-dim:rgba(217,138,61,.28);
   }
-  body{
-    background:var(--bg); color:var(--ink); margin:0;
+  body{background:var(--bg);color:var(--ink);margin:0;
     font-family:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
-    font-weight:300; font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased;
-  }
+    font-weight:300;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
   .wrap{max-width:1020px;margin:0 auto;padding-inline:24px}
 
-  /* ---- nav ---- */
-  nav{display:flex;align-items:baseline;gap:16px;padding-block:24px 0}
+  nav{display:flex;align-items:baseline;padding-block:24px 0}
   .mark{font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:700;font-size:17px;
     letter-spacing:.11em;text-transform:uppercase}
   .mark span{color:var(--accent)}
-  nav a{margin-left:auto;font-family:"IBM Plex Mono",monospace;font-size:12px;
-    color:var(--ink-2);text-decoration:none;letter-spacing:.04em}
-  nav a:hover{color:var(--accent)}
 
-  /* ---- hero ---- */
-  .hero{position:relative;padding-block:48px 0}
-  #rig{display:block;width:100%;height:340px;max-width:100%}
-  .hero-copy{margin-top:-28px;position:relative}
+  .hero{padding-block:36px 0}
+  .hero-img{display:block;width:100%;height:auto;max-width:100%}
+  .hero-copy{margin-top:30px}
   h1{font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:600;
-    font-size:clamp(36px,7vw,68px);line-height:1.02;letter-spacing:-.02em;
+    font-size:clamp(36px,7.2vw,70px);line-height:1.02;letter-spacing:-.02em;
     margin:0;max-width:15ch;text-wrap:balance}
   h1 em{font-style:normal;color:var(--accent)}
-  .lede{margin:22px 0 0;max-width:56ch;color:var(--ink-2);font-size:clamp(16px,2vw,18.5px)}
+  .lede{margin:22px 0 0;max-width:57ch;color:var(--ink-2);font-size:clamp(16px,2vw,18.5px)}
 
-  /* ---- sections ---- */
   section{padding-block:76px 0}
   .eyebrow{display:flex;align-items:center;gap:10px;font-family:"IBM Plex Mono",monospace;
     font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:0 0 22px}
   .eyebrow::after{content:"";height:1px;background:var(--line);flex:1}
   .statement{font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:600;
-    font-size:clamp(21px,3.2vw,30px);line-height:1.32;letter-spacing:-.01em;
-    margin:0;max-width:24ch;text-wrap:balance}
-  .statement + p{margin:20px 0 0;max-width:58ch;color:var(--ink-2)}
+    font-size:clamp(21px,3.3vw,31px);line-height:1.3;letter-spacing:-.01em;
+    margin:0;max-width:23ch;text-wrap:balance}
+  .statement em{font-style:normal;color:var(--accent)}
+  .body p{margin:20px 0 0;max-width:58ch;color:var(--ink-2)}
+  .body p:first-child{margin-top:0}
+  .body p + p{margin-top:16px}
+  .sec-grid{display:grid;gap:26px}
+  @media (min-width:900px){
+    .sec-grid{grid-template-columns:minmax(0,7fr) minmax(0,9fr);gap:64px;align-items:start}
+    .sec-grid .statement{max-width:20ch}
+    .sec-grid .body p{max-width:52ch}
+  }
 
   .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;
     background:var(--line);border:1px solid var(--line);margin-top:8px}
@@ -73,50 +76,72 @@
     margin:0 0 10px;letter-spacing:-.005em}
   .pillar p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.6}
 
-  .roles{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 0;padding:0;list-style:none}
+  .roles{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
   .roles li{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);
-    border:1px solid var(--line);padding:6px 12px;letter-spacing:.02em}
-
-  .contact{margin-top:26px;display:flex;flex-wrap:wrap;gap:10px 32px}
+    border:1px solid var(--line);padding:6px 12px}
+  .contact{margin-top:26px}
   .contact a{color:var(--accent);text-decoration:none;font-size:15px;
     border-bottom:1px solid var(--accent-dim);padding-bottom:1px}
   .contact a:hover{border-bottom-color:var(--accent)}
   a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
 
-  footer{margin-top:88px;padding-block:22px 40px;border-top:1px solid var(--line);
+  footer{margin-top:90px;padding-block:22px 44px;border-top:1px solid var(--line);
     font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);
-    display:flex;flex-wrap:wrap;gap:6px 24px}
-
-  @media (prefers-reduced-motion: reduce){#rig{opacity:.85}}
+    display:flex;flex-wrap:wrap;gap:6px 26px}
+  footer .heart{color:var(--accent)}
 </style>
 
 <div class="wrap">
-  <nav>
-    <span class="mark">Super<span>·</span>Humanoids</span>
-  </nav>
+  <nav><span class="mark">Super<span>&#183;</span>Humanoids</span></nav>
 
   <div class="hero">
-    <canvas id="rig" aria-hidden="true"></canvas>
+    <img class="hero-img" src="hero.jpg" width="2000" height="840"
+         alt="Three-stage transformation sequence of a reconfigurable robot: upright bipedal stance, mid-transition, and compact wheeled form">
     <div class="hero-copy">
-      <h1>Robots that <em>generalize</em>, not robots that repeat.</h1>
+      <h1>We will do what humanoids <em>cannot</em>.</h1>
       <p class="lede">
-        Artila Robotics is building foundation models for general-purpose humanoid robots —
-        one model family for perception, locomotion and manipulation, learned rather than
-        programmed task by task.
+        The human form is a starting point, not a ceiling. We are building machines that begin
+        where the humanoid ends &mdash; reconfiguring their own bodies to suit the task, instead of
+        forcing every task through one fixed shape.
       </p>
     </div>
   </div>
 
   <section>
-    <p class="eyebrow">The problem</p>
-    <p class="statement">Every robot that works today works because someone told it exactly what to do.</p>
+    <p class="eyebrow">Why the name</p>
+    <div class="sec-grid">
+    <p class="statement">A humanoid can only ever be as capable as the body it copies.</p>
+    <div class="body">
     <p>
-      Change the object, the lighting, the surface, the height of the table — and it stops.
-      Decades of robotics have produced machines that are extraordinary at one task and helpless
-      at the next. General-purpose robots need models that carry capability <em>across</em> tasks
-      and across bodies, the way language models carry it across domains. That is the problem
-      we work on.
+      Two arms, two legs, one configuration. It is a remarkable design &mdash; and a hard limit.
+      Every humanoid robot inherits the constraints of the thing it was modelled on, including
+      the ones evolution never had a reason to solve.
     </p>
+    <p>
+      We are not trying to build a better copy of a person. We are building what comes after
+      one. That is why we are called Super Humanoids.
+    </p>
+    </div>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">The ambition</p>
+    <div class="sec-grid">
+    <p class="statement">Transformers were never a cartoon. They were <em>a specification</em>.</p>
+    <div class="body">
+    <p>
+      A machine that changes its own configuration &mdash; folding, extending, redistributing its mass
+      to walk, climb, carry or fit &mdash; is the thing a generation of us grew up watching and assumed
+      was impossible. It is not impossible. It is a control problem, a materials problem, and above
+      all a learning problem, and the path runs through foundation models rather than bespoke
+      mechanism design.
+    </p>
+    <p>
+      Nobody has built one. We intend to make them real.
+    </p>
+    </div>
+    </div>
   </section>
 
   <section>
@@ -124,13 +149,13 @@
     <div class="pillars">
       <div class="pillar">
         <span class="idx">01</span>
-        <h3>One policy, many tasks</h3>
-        <p>A single model family spanning perception, whole-body control and manipulation — trained across tasks rather than engineered for each one.</p>
+        <h3>One policy, many bodies</h3>
+        <p>A single model family spanning perception, whole-body control and manipulation &mdash; trained across tasks and across morphologies rather than engineered for one.</p>
       </div>
       <div class="pillar">
         <span class="idx">02</span>
         <h3>Simulation at scale</h3>
-        <p>Policies learn across massively parallel physics simulation, where a robot can attempt a task more times in an hour than a human could in a lifetime.</p>
+        <p>Policies learn across massively parallel physics simulation, where a machine can attempt a task more times in an hour than a human could in a lifetime.</p>
       </div>
       <div class="pillar">
         <span class="idx">03</span>
@@ -142,7 +167,9 @@
 
   <section>
     <p class="eyebrow">Work with us</p>
+    <div class="sec-grid">
     <p class="statement">Small team. Hard problem. Very little of it is solved.</p>
+    <div class="body">
     <ul class="roles">
       <li>Reinforcement learning</li>
       <li>Whole-body control</li>
@@ -150,87 +177,17 @@
       <li>Simulation</li>
       <li>Training infrastructure</li>
     </ul>
-    <div class="contact">
-      <a href="mailto:hello@superhumanoids.ai">hello@superhumanoids.ai</a>
+    <div class="contact"><a href="mailto:hello@superhumanoids.ai">hello@superhumanoids.ai</a></div>
+    </div>
     </div>
   </section>
 
   <footer>
-    <span>Super Humanoids — Artila Robotics Inc.</span>
+    <span>Made with <span class="heart">&#9829;</span> in the US</span>
     <span>&copy; 2026</span>
   </footer>
 </div>
 
-<script>
-(function(){
-  var c = document.getElementById('rig'), x = c.getContext('2d');
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var W, H, DPR, t = 0;
-
-  function size(){
-    DPR = Math.min(window.devicePixelRatio || 1, 2);
-    W = c.clientWidth; H = c.clientHeight;
-    c.width = W * DPR; c.height = H * DPR;
-    x.setTransform(DPR,0,0,DPR,0,0);
-  }
-  window.addEventListener('resize', size); size();
-
-  // forward kinematics: returns endpoint, draws link
-  function link(px,py,ang,len){
-    var ex = px + Math.cos(ang)*len, ey = py + Math.sin(ang)*len;
-    x.beginPath(); x.moveTo(px,py); x.lineTo(ex,ey); x.stroke();
-    x.beginPath(); x.arc(px,py,2.6,0,6.2832); x.fill();
-    return [ex,ey];
-  }
-
-  function frame(){
-    x.clearRect(0,0,W,H);
-
-    // ground grid
-    x.strokeStyle = '#141A20'; x.lineWidth = 1;
-    var gy = H*0.9;
-    for (var i=0;i<7;i++){
-      var yy = gy - i*i*2.2;
-      x.globalAlpha = 1 - i/8;
-      x.beginPath(); x.moveTo(0,yy); x.lineTo(W,yy); x.stroke();
-    }
-    x.globalAlpha = 1;
-
-    var s = Math.min(H/4.6, 78);          // limb scale
-    var cx = W*0.5, hip = gy - s*2.15;    // pelvis
-    var p = t;
-
-    x.strokeStyle = '#D98A3D'; x.fillStyle = '#D98A3D';
-    x.lineWidth = 2; x.lineCap = 'round';
-
-    // torso + head
-    var neck = link(cx, hip, -Math.PI/2 + Math.sin(p)*0.03, s*1.05);
-    x.beginPath(); x.arc(neck[0], neck[1]-s*0.3, s*0.26, 0, 6.2832); x.stroke();
-
-    // arms (counter-phase to legs)
-    [[p+Math.PI, 1],[p, -1]].forEach(function(a){
-      var sh = a[0];
-      var el = link(neck[0], neck[1]+s*0.06, Math.PI/2 + Math.sin(sh)*0.62, s*0.72);
-      link(el[0], el[1], Math.PI/2 + Math.sin(sh)*0.62 + 0.35 + Math.abs(Math.sin(sh+0.6))*0.5, s*0.66);
-    });
-
-    // legs
-    [[p,1],[p+Math.PI,1]].forEach(function(a){
-      var th = a[0];
-      var knee = link(cx, hip, Math.PI/2 + Math.sin(th)*0.52, s*0.92);
-      var ank  = link(knee[0], knee[1], Math.PI/2 + Math.sin(th)*0.52 + Math.max(0, Math.sin(th+1.1))*0.85, s*0.9);
-      x.beginPath(); x.moveTo(ank[0],ank[1]); x.lineTo(ank[0]+s*0.26, ank[1]); x.stroke();
-    });
-
-    // pelvis marker
-    x.beginPath(); x.arc(cx,hip,3.4,0,6.2832); x.fill();
-
-    if (!reduce) t += 0.026;
-    requestAnimationFrame(frame);
-  }
-  frame();
-})();
-</script>
 
 </body>
 </html>
