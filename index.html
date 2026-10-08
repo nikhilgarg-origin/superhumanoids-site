@@ -1,195 +1,177 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Super Humanoids</title>
-<meta name="description" content="Super Humanoids is built by Artila Robotics Inc., a Delaware corporation building foundation models for general-purpose robotics.">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://superhumanoids.ai/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Super Humanoids">
-<meta property="og:title" content="Super Humanoids">
-<meta property="og:description" content="We will do what humanoids cannot.">
-<meta property="og:url" content="https://superhumanoids.ai/">
-<meta property="og:image" content="https://superhumanoids.ai/hero.jpg">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Super Humanoids">
-<meta name="twitter:description" content="We will do what humanoids cannot.">
-<meta name="twitter:image" content="https://superhumanoids.ai/hero.jpg">
-<meta name="theme-color" content="#08090B">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2308090B'/%3E%3Cg stroke='%23D98A3D' stroke-width='2.2' fill='none' stroke-linecap='round'%3E%3Cpath d='M16 7v9'/%3E%3Cpath d='M16 16l-4 5'/%3E%3Cpath d='M16 16l4 5'/%3E%3Cpath d='M16 10l-4 3'/%3E%3Cpath d='M16 10l4 3'/%3E%3C/g%3E%3Ccircle cx='16' cy='5' r='2.2' fill='%23D98A3D'/%3E%3C/svg%3E">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#08090b">
+  <meta name="description" content="Super Humanoids is developing foundation models for robots across bodies, tasks and environments.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://superhumanoids.ai/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Super Humanoids">
+  <meta property="og:title" content="Super Humanoids — One intelligence. Many bodies.">
+  <meta property="og:description" content="Foundation models for robots across bodies, tasks and environments.">
+  <meta property="og:url" content="https://superhumanoids.ai/">
+  <meta property="og:image" content="https://superhumanoids.ai/assets/sequence.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Super Humanoids — One intelligence. Many bodies.">
+  <meta name="twitter:description" content="Foundation models for robots across bodies, tasks and environments.">
+  <meta name="twitter:image" content="https://superhumanoids.ai/assets/sequence.png">
+  <title>Super Humanoids — One intelligence. Many bodies.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="update.css">
 </head>
 <body>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@300;400&display=swap">
-<style>
-  *,*::before,*::after{box-sizing:border-box}
-  :root{
-    --bg:#08090B; --panel:#0E1116; --ink:#E9EEF1; --ink-2:#8B97A1; --ink-3:#5A656E;
-    --line:#191F26; --accent:#D98A3D; --accent-dim:rgba(217,138,61,.28);
-  }
-  body{background:var(--bg);color:var(--ink);margin:0;
-    font-family:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;
-    font-weight:300;font-size:16px;line-height:1.65;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1020px;margin:0 auto;padding-inline:24px}
+  <header class="nav shell">
+    <a class="brand" href="#top" aria-label="Super Humanoids home">SUPER<span>·</span>HUMANOIDS</a>
+    <nav aria-label="Main navigation">
+      <a href="#technology">Model</a><a href="#product">Embodiments</a><a href="#roadmap">Roadmap</a>
+    </nav>
+    <a class="nav-cta" href="mailto:hello@superhumanoids.ai">Talk to us <span>↗</span></a>
+  </header>
 
-  nav{display:flex;align-items:baseline;padding-block:24px 0}
-  .mark{font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:700;font-size:17px;
-    letter-spacing:.11em;text-transform:uppercase}
-  .mark span{color:var(--accent)}
-
-  .hero{padding-block:36px 0}
-  .hero-img{display:block;width:100%;height:auto;max-width:100%}
-  .hero-copy{margin-top:30px}
-  h1{font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:600;
-    font-size:clamp(36px,7.2vw,70px);line-height:1.02;letter-spacing:-.02em;
-    margin:0;max-width:15ch;text-wrap:balance}
-  h1 em{font-style:normal;color:var(--accent)}
-  .lede{margin:22px 0 0;max-width:57ch;color:var(--ink-2);font-size:clamp(16px,2vw,18.5px)}
-
-  section{padding-block:76px 0}
-  .eyebrow{display:flex;align-items:center;gap:10px;font-family:"IBM Plex Mono",monospace;
-    font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3);margin:0 0 22px}
-  .eyebrow::after{content:"";height:1px;background:var(--line);flex:1}
-  .statement{font-family:"IBM Plex Sans Condensed",sans-serif;font-weight:600;
-    font-size:clamp(21px,3.3vw,31px);line-height:1.3;letter-spacing:-.01em;
-    margin:0;max-width:23ch;text-wrap:balance}
-  .statement em{font-style:normal;color:var(--accent)}
-  .body p{margin:20px 0 0;max-width:58ch;color:var(--ink-2)}
-  .body p:first-child{margin-top:0}
-  .body p + p{margin-top:16px}
-  .sec-grid{display:grid;gap:26px}
-  @media (min-width:900px){
-    .sec-grid{grid-template-columns:minmax(0,7fr) minmax(0,9fr);gap:64px;align-items:start}
-    .sec-grid .statement{max-width:20ch}
-    .sec-grid .body p{max-width:52ch}
-  }
-
-  .pillars{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;
-    background:var(--line);border:1px solid var(--line);margin-top:8px}
-  .pillar{background:var(--panel);padding:26px 24px 30px}
-  .pillar .idx{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--accent);
-    letter-spacing:.1em;display:block;margin-bottom:14px}
-  .pillar h3{font-family:"IBM Plex Sans Condensed",sans-serif;font-size:19px;font-weight:600;
-    margin:0 0 10px;letter-spacing:-.005em}
-  .pillar p{margin:0;color:var(--ink-2);font-size:14.5px;line-height:1.6}
-
-  .roles{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
-  .roles li{font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--ink-2);
-    border:1px solid var(--line);padding:6px 12px}
-  .contact{margin-top:26px}
-  .contact a{color:var(--accent);text-decoration:none;font-size:15px;
-    border-bottom:1px solid var(--accent-dim);padding-bottom:1px}
-  .contact a:hover{border-bottom-color:var(--accent)}
-  a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-
-  footer{margin-top:90px;padding-block:22px 44px;border-top:1px solid var(--line);
-    font-family:"IBM Plex Mono",monospace;font-size:11.5px;color:var(--ink-3);
-    display:flex;flex-wrap:wrap;gap:6px 26px}
-  footer .heart{color:var(--accent)}
-</style>
-
-<div class="wrap">
-  <nav><span class="mark">Super<span>&#183;</span>Humanoids</span></nav>
-
-  <div class="hero">
-    <img class="hero-img" src="hero.jpg" width="2000" height="840"
-         alt="Three-stage transformation sequence of a reconfigurable robot: upright bipedal stance, mid-transition, and compact wheeled form">
-    <div class="hero-copy">
-      <h1>We will do what humanoids <em>cannot</em>.</h1>
-      <p class="lede">
-        The human form is a starting point, not a ceiling. We are building machines that begin
-        where the humanoid ends &mdash; reconfiguring their own bodies to suit the task, instead of
-        forcing every task through one fixed shape.
-      </p>
-    </div>
-  </div>
-
-  <section>
-    <p class="eyebrow">Why the name</p>
-    <div class="sec-grid">
-    <p class="statement">A humanoid can only ever be as capable as the body it copies.</p>
-    <div class="body">
-    <p>
-      Two arms, two legs, one configuration. It is a remarkable design &mdash; and a hard limit.
-      Every humanoid robot inherits the constraints of the thing it was modelled on, including
-      the ones evolution never had a reason to solve.
-    </p>
-    <p>
-      We are not trying to build a better copy of a person. We are building what comes after
-      one. That is why we are called Super Humanoids.
-    </p>
-    </div>
-    </div>
-  </section>
-
-  <section>
-    <p class="eyebrow">The ambition</p>
-    <div class="sec-grid">
-    <p class="statement">Transformers were never a cartoon. They were <em>a specification</em>.</p>
-    <div class="body">
-    <p>
-      A machine that changes its own configuration &mdash; folding, extending, redistributing its mass
-      to walk, climb, carry or fit &mdash; is the thing a generation of us grew up watching and assumed
-      was impossible. It is not impossible. It is a control problem, a materials problem, and above
-      all a learning problem, and the path runs through foundation models rather than bespoke
-      mechanism design.
-    </p>
-    <p>
-      Nobody has built one. We intend to make them real.
-    </p>
-    </div>
-    </div>
-  </section>
-
-  <section>
-    <p class="eyebrow">Approach</p>
-    <div class="pillars">
-      <div class="pillar">
-        <span class="idx">01</span>
-        <h3>One policy, many bodies</h3>
-        <p>A single model family spanning perception, whole-body control and manipulation &mdash; trained across tasks and across morphologies rather than engineered for one.</p>
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy reveal">
+        <p class="eyebrow"><span class="pulse"></span> Robotics foundation models</p>
+        <h1>One intelligence.<br><em>Many bodies.</em></h1>
+        <p class="lede">Super Humanoids is developing a foundation-model approach to robotics: shared intelligence intended to perceive, reason and control across different bodies, tasks and environments.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#technology">Explore the model thesis <span>↓</span></a>
+          <a class="button ghost" href="mailto:hello@superhumanoids.ai?subject=Super%20Humanoids">Start a conversation <span>↗</span></a>
+        </div>
+        <p class="micro">Research-stage company · Artila Robotics Inc.</p>
       </div>
-      <div class="pillar">
-        <span class="idx">02</span>
-        <h3>Simulation at scale</h3>
-        <p>Policies learn across massively parallel physics simulation, where a machine can attempt a task more times in an hour than a human could in a lifetime.</p>
-      </div>
-      <div class="pillar">
-        <span class="idx">03</span>
-        <h3>Closing the reality gap</h3>
-        <p>A policy is only as good as its transfer to the physical world. Our development loop is built around narrowing that gap, not around benchmark scores.</p>
-      </div>
-    </div>
-  </section>
+      <figure class="hero-media reveal delay-1">
+        <img src="assets/sequence.png" alt="One reconfigurable robot shown in walking, transforming, and rolling configurations">
+        <figcaption><span>Fig. 01</span> Cross-embodiment study · Concept visualization</figcaption>
+      </figure>
+    </section>
 
-  <section>
-    <p class="eyebrow">Work with us</p>
-    <div class="sec-grid">
-    <p class="statement">Small team. Hard problem. Very little of it is solved.</p>
-    <div class="body">
-    <ul class="roles">
-      <li>Reinforcement learning</li>
-      <li>Whole-body control</li>
-      <li>Perception</li>
-      <li>Simulation</li>
-      <li>Training infrastructure</li>
-    </ul>
-    <div class="contact"><a href="mailto:hello@superhumanoids.ai">hello@superhumanoids.ai</a></div>
-    </div>
-    </div>
-  </section>
+    <section class="status-band">
+      <div class="shell status-grid reveal">
+        <div><small>STAGE</small><strong>Research · Pre-MVP</strong></div>
+        <div><small>FIRST PROOF</small><strong>Cross-body simulation</strong></div>
+        <div><small>FOCUS</small><strong>Robotics foundation models</strong></div>
+      </div>
+    </section>
 
-  <footer>
-    <span>Artila Robotics Inc.</span>
-    <span>16192 Coastal Highway, Lewes, Delaware 19958, United States</span>
-    <span>Made with <span class="heart">&#9829;</span> in the US</span>
-    <span>&copy; 2026</span>
+    <section class="problem band" id="product">
+      <div class="shell split">
+        <div class="section-head reveal">
+          <p class="eyebrow">The problem</p>
+          <h2>Robot intelligence is trapped inside the body it was trained on.</h2>
+        </div>
+        <div class="statement reveal delay-1">
+          <p>Most robot policies are built around one morphology, one sensor arrangement and a narrow task distribution. Change the body and much of the intelligence must be rebuilt.</p>
+          <p class="accent-line">Our hypothesis: a shared model can learn reusable representations of bodies, tasks and physical interaction.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="modes shell">
+      <div class="section-head row reveal">
+        <div><p class="eyebrow">Embodiment testbed</p><h2>Different bodies. Shared intelligence.</h2></div>
+        <p class="section-note">Reconfiguration is our hardest test: can one model retain useful physical knowledge as the body itself changes?</p>
+      </div>
+      <div class="mode-grid">
+        <article class="mode-card reveal">
+          <div class="image-wrap"><img src="assets/m-walk.jpg" alt="Robot in bipedal walking configuration"><span>01 / WALK</span></div>
+          <h3>Bipedal embodiment</h3><p>A high-degree-of-freedom body for studying locomotion, balance, perception and articulated manipulation.</p>
+        </article>
+        <article class="mode-card reveal delay-1">
+          <div class="image-wrap"><img src="assets/m-climb.jpg" alt="Robot in four-limbed climbing configuration"><span>02 / CLIMB</span></div>
+          <h3>Climbing embodiment</h3><p>A four-contact configuration for studying body-aware planning, contact transitions and load redistribution.</p>
+        </article>
+        <article class="mode-card reveal delay-2">
+          <div class="image-wrap"><img src="assets/m-roll.jpg" alt="Robot in compact wheeled configuration"><span>03 / ROLL</span></div>
+          <h3>Wheeled embodiment</h3><p>A compact configuration for studying efficient navigation while preserving a shared representation of the machine.</p>
+        </article>
+      </div>
+      <p class="concept-note">These are concept visualizations of a future research platform—not photographs of existing hardware.</p>
+    </section>
+
+    <section class="architecture band" id="technology">
+      <div class="shell">
+        <div class="section-head row reveal">
+          <div><p class="eyebrow">Foundation-model thesis</p><h2>Pretrain once. Adapt across embodiments.</h2></div>
+          <p class="section-note">The body may change. Useful representations of the physical world should transfer.</p>
+        </div>
+        <div class="architecture-grid reveal delay-1">
+          <div class="arch-copy">
+            <div class="arch-step active" data-step="0"><span>01</span><div><h3>Encode the body</h3><p>Represent morphology, sensors and actuation explicitly so the model can condition behaviour on the machine it controls.</p></div></div>
+            <div class="arch-step" data-step="1"><span>02</span><div><h3>Pretrain across experience</h3><p>Learn reusable physical representations from diverse simulated bodies, tasks, contacts and failure modes.</p></div></div>
+            <div class="arch-step" data-step="2"><span>03</span><div><h3>Adapt, then ground</h3><p>Fine-tune for a new embodiment and close the simulation-to-reality gap through measured hardware experience.</p></div></div>
+          </div>
+          <div class="system-visual" aria-label="Technical control architecture diagram">
+            <div class="core"><span>SH</span><small>FOUNDATION</small></div>
+            <div class="orbit orbit-a"><span>EMBODIMENT</span></div>
+            <div class="orbit orbit-b"><span>ACTION</span></div>
+            <div class="orbit orbit-c"><span>WORLD MODEL</span></div>
+            <div class="grid-lines"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="field shell">
+      <figure class="field-image reveal"><img src="assets/field.jpg" alt="Concept visualization of a reconfigurable robot inside a large industrial facility"></figure>
+      <div class="field-copy reveal delay-1">
+        <p class="eyebrow">First proving ground</p>
+        <h2>Industrial sites demand more than one kind of body.</h2>
+          <p>Complex facilities offer a demanding test for cross-embodiment intelligence: one mission may require floor transit, human-scale access, vertical traversal and manipulation.</p>
+        <div class="value-list">
+          <div><span>01</span><p><strong>Learn across bodies</strong>Test whether physical representations transfer when morphology and contact patterns change.</p></div>
+          <div><span>02</span><p><strong>Measure adaptation</strong>Track how much data and training a new configuration needs to acquire a task.</p></div>
+          <div><span>03</span><p><strong>Compound experience</strong>Turn every embodiment and task into data for the shared model family.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="roadmap band" id="roadmap">
+      <div class="shell">
+        <div class="section-head row reveal">
+          <div><p class="eyebrow">Development roadmap</p><h2>From dataset to embodied foundation model.</h2></div>
+        <p class="section-note">A proposed milestone path from research thesis to a measurable cross-embodiment MVP.</p>
+        </div>
+        <div class="timeline reveal delay-1">
+          <article><span class="marker">01</span><small>DATA</small><h3>Multi-body simulation</h3><p>Create a structured dataset spanning simplified bodies, tasks, contacts and failures.</p></article>
+          <article><span class="marker">02</span><small>FIRST MVP</small><h3>Shared policy pretraining</h3><p>Train one model family across multiple simulated embodiments instead of one policy per body.</p></article>
+          <article><span class="marker">03</span><small>BENCHMARK</small><h3>Cross-body transfer</h3><p>Measure adaptation speed and task success on a held-out morphology.</p></article>
+          <article><span class="marker">04</span><small>GROUNDING</small><h3>Hardware validation</h3><p>Transfer a constrained capability to a physical test rig and measure the reality gap.</p></article>
+        </div>
+        <p class="sample-flag">Sample roadmap—replace stages and timing with verified company milestones before publishing publicly.</p>
+      </div>
+    </section>
+
+    <section class="proof shell">
+      <div class="section-head reveal"><p class="eyebrow">Current stage</p><h2>A foundation-model thesis before a working model.</h2></div>
+      <div class="proof-panel reveal delay-1">
+        <div><span class="status"><i></i> Pre-MVP</span><h3>The immediate objective is a narrow cross-embodiment benchmark.</h3><p>We are not presenting a trained foundation model or working robot today. The first proof point is one shared policy that completes a measurable task across simplified virtual bodies.</p></div>
+        <div class="proof-slots">
+          <span>MULTI-BODY DATASET</span><span>TRANSFER METRIC</span><span>REPRODUCIBLE DEMO</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta band">
+      <div class="shell cta-inner reveal">
+        <p class="eyebrow">Industrial partners · technical talent</p>
+        <h2>The body is only the beginning.</h2>
+        <p>We are at the beginning: defining the first cross-embodiment dataset and looking for technical collaborators who want to test the foundation-model hypothesis.</p>
+        <a class="button primary" href="mailto:hello@superhumanoids.ai">hello@superhumanoids.ai <span>↗</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="shell footer">
+    <a class="brand" href="#top">SUPER<span>·</span>HUMANOIDS</a>
+    <p>Artila Robotics Inc. · Delaware, United States</p>
+    <p>Sample concept site · © 2026</p>
   </footer>
-</div>
-
-
+  <script src="script.js"></script>
 </body>
 </html>
