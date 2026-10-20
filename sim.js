@@ -387,6 +387,20 @@ export async function startSim(root, { onProgress = () => {} } = {}) {
   new ResizeObserver(resize).observe(canvas); resize();
 
   let visible = true, last = performance.now(), simBudget = 0;
+  // adaptive quality: if frames run long for a sustained stretch (a slower GPU), step the render
+  // resolution and shadow detail down until the scene holds its frame rate
+  let slow = 0, tier = 0, prevFrame = 0;
+  const tiers = [
+    () => renderer.setPixelRatio(Math.min(devicePixelRatio, 1.5)),
+    () => { renderer.setPixelRatio(1); key.shadow.mapSize.set(1024, 1024); key.shadow.map?.dispose(); key.shadow.map = null; },
+    () => { renderer.setPixelRatio(0.8); key.shadow.radius = 2; },
+  ];
+  function adapt(now) {
+    const dt = prevFrame ? now - prevFrame : 16; prevFrame = now;
+    if (dt > 100) return;                       // tab switch or first frame: not a performance signal
+    slow = dt > 22 ? slow + 1 : Math.max(0, slow - 2);
+    if (slow > 45 && tier < tiers.length) { tiers[tier++](); resize(); slow = 0; }
+  }
   new IntersectionObserver(([e]) => { visible = e.isIntersecting; last = performance.now(); }).observe(root);
   document.addEventListener('visibilitychange', () => { last = performance.now(); });
 
@@ -417,6 +431,7 @@ export async function startSim(root, { onProgress = () => {} } = {}) {
     } else status.textContent = '';
     clock.textContent = `t ${d.time.toFixed(1)} s`;
     renderer.render(scene, camera);
+    adapt(now);
   }
 
   show('quadruped');
