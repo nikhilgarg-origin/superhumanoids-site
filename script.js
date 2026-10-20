@@ -7,6 +7,16 @@
   const step = mobile ? 2 : 1;          // phones get every other frame
   const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
   const smooth = t => t * t * (3 - 2 * t);
+  // design variants for review: ?v=1 perception (default) · 2 cinematic · 3 kinetic type · 4 x-ray · 5 blueprint
+  const V = clamp(+new URLSearchParams(location.search).get('v') || 1, 1, 5);
+  root.dataset.v = V;
+  const LOOK = {
+    1: { edges: 'solid', joint: 'ring', labels: true },
+    2: { off: true },
+    3: { joint: 'dot' },
+    4: { edges: 'solid', joint: 'ring', labels: true, line: 'rgba(160,190,255,.7)' },
+    5: { edges: 'dashed', joint: 'cross', arcs: true, labels: true, line: 'rgba(143,176,255,.55)' },
+  }[V];
 
   // ---------- frame sequences ----------
   // Frames arrive as compressed blobs (a few MB per sequence). Only a small window around the
@@ -86,14 +96,17 @@
   // canvas sizes come from a ResizeObserver, so the render loop never reads layout
   const sizes = new WeakMap();
   const ro = new ResizeObserver(entries => { for (const e of entries) sizes.set(e.target, e.contentRect); dirty = true; });
-  function fitCanvas(c) {
+  function fitCanvas(c, scale = 1) {
     if (!sizes.has(c)) { ro.observe(c); sizes.set(c, c.getBoundingClientRect()); }
     // never allocate more canvas than the frames can fill (1920 px desktop, 720 px phone)
     const box = sizes.get(c), cap = mobile ? 720 * 1.6 : 1920;
-    const dpr = Math.min(devicePixelRatio || 1, 2, cap / Math.max(1, box.width));
+    const dpr = Math.min(devicePixelRatio || 1, 2, cap / Math.max(1, box.width)) * scale;
     const w = Math.round(box.width * dpr), h = Math.round(box.height * dpr);
     if (c.width !== w || c.height !== h) { c.width = w; c.height = h; c._last = null; }
   }
+  const XRAY = 'grayscale(1) brightness(.62) contrast(2.3) sepia(1) hue-rotate(185deg) saturate(2.4)';
+  const ctxFilter = 'filter' in CanvasRenderingContext2D.prototype;
+  if (ctxFilter) root.classList.add('ctx-filter');
   function draw(c, img) {
     if (!img || c._last === img) return;
     const ctx = c.getContext('2d');
@@ -126,31 +139,52 @@
       // lock-on: rings settle from wide to tight, joint by joint, the first time the overlay shows
       if (alpha > 0.01 && !o.born) o.born = now;
       const t = reduced ? 1 : (now - o.born) / 700;
-      const key = frame + '|' + alpha.toFixed(2) + '|' + (t < 1.6 ? t.toFixed(2) : 'done') + '|' + W;
+      const st = canvas.parentElement;
+      const key = frame + '|' + alpha.toFixed(2) + '|' + (t < 1.6 ? t.toFixed(2) : 'done') + '|' + W + (V === 4 ? '|' + st._lx + ',' + st._ly : '');
       if (key === o.drawn) return;
       o.drawn = key;
       const ctx = canvas.getContext('2d');
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
-      if (alpha <= 0.01) return;
+      if (alpha <= 0.01 || LOOK.off) return;
       let w, h, x0, y0;
       if (W / H > FRAME_ASPECT) { w = W; h = W / FRAME_ASPECT; x0 = 0; y0 = (H - h) / 2; }
       else { h = H; w = H * FRAME_ASPECT; x0 = (W - w) / 2; y0 = 0; }
       const pts = o.data.frames[Math.min(frame, o.data.frames.length - 1)].map(([x, y, q]) => [x0 + x * w, y0 + y * h, q]);
+      o.last = pts;
       const rig = RIG[name];
       // phones stack the copy under the robot: keep the overlay out of the text block
       ctx.save();
+      if (V === 4) { if (st._lx === undefined) { ctx.restore(); return; } ctx.beginPath(); ctx.arc(st._lx, st._ly, fx.R, 0, Math.PI * 2); ctx.clip(); }
       const limit = mobile ? H * 0.58 : Infinity, vis = p => p[1] < limit - 12;
       ctx.globalAlpha = alpha;
       ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(236,235,231,.38)';
-      ctx.beginPath();
-      for (const [a, b] of rig.edges) if (vis(pts[a]) && vis(pts[b])) { ctx.moveTo(pts[a][0], pts[a][1]); ctx.lineTo(pts[b][0], pts[b][1]); }
-      ctx.stroke();
-      pts.forEach(([x, y], k) => {
+      if (LOOK.edges) {
+        ctx.strokeStyle = LOOK.line || 'rgba(236,235,231,.38)';
+        ctx.setLineDash(LOOK.edges === 'dashed' ? [4, 4] : []);
+        ctx.beginPath();
+        for (const [a, b] of rig.edges) if (vis(pts[a]) && vis(pts[b])) { ctx.moveTo(pts[a][0], pts[a][1]); ctx.lineTo(pts[b][0], pts[b][1]); }
+        ctx.stroke(); ctx.setLineDash([]);
+      }
+      pts.forEach(([x, y, q], k) => {
         if (!vis(pts[k])) return;
         const lt = clamp(t - k * 0.07), e = 1 - Math.pow(1 - lt, 3);
         ctx.globalAlpha = alpha * e;
+        if (LOOK.joint === 'dot') {
+          ctx.fillStyle = 'rgba(236,235,231,.9)'; ctx.beginPath(); ctx.arc(x, y, 2.5 + 4 * (1 - e), 0, Math.PI * 2); ctx.fill();
+          return;
+        }
+        if (LOOK.joint === 'cross') {
+          const r = 9 + 10 * (1 - e);
+          ctx.strokeStyle = 'rgba(190,210,255,.9)'; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(x - r, y); ctx.lineTo(x - 3, y); ctx.moveTo(x + 3, y); ctx.lineTo(x + r, y);
+          ctx.moveTo(x, y - r); ctx.lineTo(x, y - 3); ctx.moveTo(x, y + 3); ctx.lineTo(x, y + r); ctx.stroke();
+          if (LOOK.arcs) {   // the joint's current angle, swept from zero
+            ctx.strokeStyle = 'rgba(84,121,234,.95)'; ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.arc(x, y, 14, -Math.PI / 2, -Math.PI / 2 + clamp(q, -Math.PI * 2, Math.PI * 2), q < 0); ctx.stroke();
+          }
+          return;
+        }
         ctx.strokeStyle = 'rgba(236,235,231,.92)'; ctx.lineWidth = 1.25;
         ctx.beginPath(); ctx.arc(x, y, 6 + 10 * (1 - e), 0, Math.PI * 2); ctx.stroke();
         ctx.fillStyle = '#5479ea';
@@ -160,11 +194,11 @@
       ctx.textBaseline = 'middle';
       // labels sit outboard of the body: left of centre goes left, right goes right
       const cx = pts.reduce((m, p) => m + p[0], 0) / pts.length;
-      for (const k of rig.labels) {
+      for (const k of LOOK.labels ? rig.labels : []) {
         const [x, y, q] = pts[k], lt = clamp(t - 0.5 - k * 0.05);
         if (lt <= 0 || !vis(pts[k])) continue;
         ctx.globalAlpha = alpha * lt;
-        const side = x < cx ? -1 : 1, label = `${o.data.labels[k]}  ${deg(q)}`;
+        const side = x < cx ? -1 : 1, label = V === 5 ? `${o.data.labels[k]}  θ ${deg(q)}` : `${o.data.labels[k]}  ${deg(q)}`;
         const tw = ctx.measureText(label).width + 14;
         const ex = x + side * 34, ey = y - 10;
         ctx.strokeStyle = 'rgba(236,235,231,.55)'; ctx.lineWidth = 1;
@@ -189,7 +223,50 @@
   const bodiesOvCanvas = bodies.querySelector('.overlay');
   const quadOv = overlay(bodiesOvCanvas, 'quadruped'), armOv = overlay(bodiesOvCanvas, 'arm');
   let readyAt = 0;
+
+  // ---------- variant staging ----------
+  const heroStage = hero.querySelector('.stage'), bodiesStage = bodies.querySelector('.stage');
+  const add = (parent, cls, tag = 'div', before = null) => { const el = document.createElement(tag); el.className = cls; el.setAttribute('aria-hidden', 'true'); parent.insertBefore(el, before); return el; };
+  const fx = {};
+  if (V === 2) {        // cinematic: letterbox opens with the scroll, the camera pushes in, cuts dip to black
+    fx.bars = [heroStage, bodiesStage].map(st => [add(st, 'bar top'), add(st, 'bar bottom')]);
+    fx.dip = add(bodiesStage, 'dip', 'div', bodiesStage.querySelector('.scrim'));
+  }
+  if (V === 3) fx.word = add(bodiesStage, 'bigword', 'div', bodiesStage.querySelector('.overlay'));
+  if (V === 4) {        // x-ray lens: an inverted copy of the frame plus the skeleton, inside a circle
+    // the lens is its own small canvas: only the pixels inside the circle are ever filtered
+    for (const st of [heroStage, bodiesStage]) st._lens = add(st, 'lens', 'canvas', st.querySelector('.overlay'));
+    fx.pointer = 0;
+    // write the lens straight onto its three layers (not via an inherited CSS variable, which
+    // would restyle every child of the stage on each move), and only when it actually moves
+    const R = mobile ? 100 : 150;
+    fx.moveLens = (st, x, y) => {
+      if (st._lx !== undefined && Math.abs(st._lx - x) < 0.5 && Math.abs(st._ly - y) < 0.5) return;
+      st._lx = x; st._ly = y;
+      st._lens.style.transform = `translate(${(x - R).toFixed(1)}px, ${(y - R).toFixed(1)}px)`;
+      st._lensDirty = true; dirty = true;
+    };
+    fx.R = R;
+    // copy the circle of the frame under the lens into the lens canvas, filtered
+    fx.paintLens = (st, img) => {
+      if (!img || st._lx === undefined || (!st._lensDirty && st._lensImg === img)) return;
+      st._lensDirty = false; st._lensImg = img;
+      const c = st._lens, dpr = Math.min(devicePixelRatio || 1, 2), size = 2 * R;
+      if (c.width !== size * dpr) { c.width = c.height = size * dpr; }
+      const box = sizes.get(st.querySelector('.seq')); if (!box) return;
+      const iw = img.naturalWidth || img.width, ih = img.naturalHeight || img.height;
+      const r = Math.max(box.width / iw, box.height / ih), ox = (box.width - iw * r) / 2, oy = (box.height - ih * r) / 2;
+      const ctx = c.getContext('2d');
+      if (ctxFilter) ctx.filter = XRAY;
+      ctx.drawImage(img, (st._lx - R - ox) / r, (st._ly - R - oy) / r, size / r, size / r, 0, 0, c.width, c.height);
+    };
+    for (const st of [heroStage, bodiesStage]) st.addEventListener('pointermove', e => {
+      if (e.pointerType !== 'mouse') return;
+      fx.pointer = performance.now(); fx.moveLens(st, e.clientX, e.clientY);
+    }, { passive: true });
+  }
   const heroCopy = hero.querySelector('.hero-copy');
+  const heroTitle = hero.querySelector('.hero-title');
   const cue = hero.querySelector('.scroll-cue');
   const humanoid = sequence('humanoid', +hero.dataset.frames);
   const quadruped = sequence('quadruped', +bodies.dataset.frames);
@@ -286,6 +363,14 @@
     });
   }
 
+  // review switcher, only on URLs that carry ?v=
+  if (new URLSearchParams(location.search).has('v')) {
+    const names = ['Perception', 'Cinematic', 'Kinetic type', 'X-ray', 'Blueprint'];
+    const bar = document.createElement('nav'); bar.className = 'variants'; bar.setAttribute('aria-label', 'Design variants');
+    bar.innerHTML = names.map((n, i) => `<a href="?v=${i + 1}"${i + 1 === V ? ' aria-current="true"' : ''}>${i + 1}<span>${n}</span></a>`).join('');
+    document.body.append(bar);
+  }
+
   let dirty = true, lastFrame = -1, bodyOn = 0;
   function render() {
     if (!hasGsap) { st.hero = progress(hero); st.bodies = progress(bodies); }
@@ -296,6 +381,13 @@
     humanoid.width = Math.min(heroCanvas.width, 1920);
     if (heroLive) humanoid.focus(fh);
     draw(heroCanvas, humanoid.nearest(fh));
+    if (V === 4) fx.paintLens(heroStage, humanoid.nearest(fh));
+    if (V === 2) {
+      const open = reduced ? 1 : smooth(clamp(ph / 0.16));
+      fx.bars[0].forEach(b => (b.style.transform = `scaleY(${1 - open})`));
+      heroCanvas.style.transform = `scale(${1.0 + 0.07 * ph})`;
+    }
+    if (V === 3) heroTitle.style.fontWeight = Math.round(300 + 400 * smooth(clamp(ph / 0.42)));
     const fade = smooth(clamp((ph - 0.42) / 0.3));
     heroCopy.style.opacity = 1 - fade;
     heroCopy.style.transform = `translateY(${-fade * 40}px)`;
@@ -318,10 +410,24 @@
     if (bodiesLive) { quadruped.focus(fa); if (pb > 0.3) arm.focus(fb); }
     if (pb < 0.53) draw(bodyA, quadruped.nearest(fa));
     if (pb > 0.47) draw(bodyB, arm.nearest(fb));
+    if (V === 4) fx.paintLens(bodiesStage, pb < 0.5 ? quadruped.nearest(fa) : arm.nearest(fb));
+    if (V === 2) {
+      const open = reduced ? 1 : smooth(clamp(pb / 0.06));
+      fx.bars[1].forEach(b => (b.style.transform = `scaleY(${1 - open})`));
+      const local = pb < 0.5 ? pb / 0.5 : (pb - 0.5) / 0.5;
+      bodyA.style.transform = bodyB.style.transform = `scale(${1.0 + 0.06 * local})`;
+    }
+    if (V === 3) {
+      const name = pb < 0.5 ? 'Quadruped' : 'Arm';
+      if (fx.word.textContent !== name) fx.word.textContent = name;
+      const local = pb < 0.5 ? pb / 0.5 : (pb - 0.5) / 0.5;
+      fx.word.style.transform = `translateX(${(4 - 8 * local).toFixed(2)}vw)`;
+    }
     // tight crossfade bridged by a brief blur, so the two scenes never sit in a double exposure
     const x = clamp((pb - 0.47) / 0.06), haze = Math.sin(Math.PI * x);
     bodyB.style.opacity = smooth(x);
-    const blur = reduced || haze < 0.01 ? '' : `blur(${(haze * 10).toFixed(1)}px)`;
+    const blur = reduced || haze < 0.01 || V === 2 ? '' : `blur(${(haze * 10).toFixed(1)}px)`;
+    if (V === 2) { fx.dip.style.opacity = haze; bodyB.style.opacity = x < 0.5 ? 0 : 1; }
     if (bodyA.style.filter !== blur) bodyA.style.filter = bodyB.style.filter = blur;
     const on = pb < 0.5 ? 0 : 1;
     if (on !== bodyOn) { bodyItems[bodyOn].classList.remove('is-on'); bodyItems[on].classList.add('is-on'); bodyOn = on; }
@@ -337,6 +443,10 @@
       const ov = pb < 0.5 ? quadOv : armOv, other = ov === quadOv ? armOv : quadOv;
       other.drawn = '';
       ov.draw(pb < 0.5 ? fa : fb, 1 - haze, now);
+    }
+    if (V === 4 && now - fx.pointer > 2500) {    // no mouse: the lens rides the wrist / knee / flange
+      const follow = (st, ov, k) => { const p = ov.last && ov.last[k]; if (p) fx.moveLens(st, p[0], p[1]); };
+      follow(heroStage, heroOv, 1); follow(bodiesStage, pb < 0.5 ? quadOv : armOv, pb < 0.5 ? 1 : 5);
     }
     const settling = o => o.born && now - o.born < 1600;
     if ((readyAt && !heroOv.born && heroLive) || settling(heroOv) || settling(quadOv) || settling(armOv)) dirty = true;
